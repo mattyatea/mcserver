@@ -12,7 +12,9 @@ if [ $(id -u) = 0 ]; then
         echo ":: $GID"
         groupmod -o -g $GID app
     fi
-fi
 
-chown ${UID:-app}:${GID:-app} -R /app/
-exec su-exec ${UID:-app} sh /starter.sh
+    chown ${UID:-app}:${GID:-app} -R /app/
+    exec su-exec ${UID:-app} sh /starter.sh
+else
+    exec sh /starter.sh
+fi

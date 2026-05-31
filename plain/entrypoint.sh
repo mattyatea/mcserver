@@ -12,11 +12,13 @@ if [ $(id -u) = 0 ]; then
         echo ":: $GID"
         groupmod -o -g $GID app
     fi
+
+    for d in $(find /app -mindepth 1 -maxdepth 1 -type d); do
+        chown ${UID:-app}:${GID:-app} -v $d
+    done
+    chown ${UID:-app}:${GID:-app} -Rv /app/templates
+
+    exec gosu ${UID:-app} bash /launcher.sh start
+else
+    exec bash /launcher.sh start
 fi
-
-for d in $(find /app -mindepth 1 -maxdepth 1 -type d); do
-    chown ${UID:-app}:${GID:-app} -v $d
-done
-chown ${UID:-app}:${GID:-app} -Rv /app/templates
-
-exec gosu ${UID:-app} bash /launcher.sh start

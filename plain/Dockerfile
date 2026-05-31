@@ -64,7 +64,9 @@ RUN apt-get update -qq && \
 # Copy Entry point
 COPY entrypoint.sh launcher.sh autoconfig.sh /
 
-RUN userdel -rf $(cat /etc/passwd | grep 1000 | cut -d ':' -f 1) && \
+RUN if id 1000 >/dev/null 2>&1; then \
+        userdel -rf "$(id -un 1000)"; \
+    fi && \
     useradd app --uid 1000 -U -s /bin/bash
 
 # Copy basements...

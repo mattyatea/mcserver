@@ -27,7 +27,6 @@ ENV PORT 25565
 COPY --from=download_spigot /spigot/spigot.jar /spigot/
 
 # Setup user
-RUN chmod u+s /bin/*
 RUN apk --no-cache add su-exec shadow yq
 
 # Copy Entry point
